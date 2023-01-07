@@ -1,4 +1,5 @@
-from easyAI import *
+from easyAI import (AI_Player, Human_Player, TranspositionTable, TwoPlayerGame,
+                    solve_with_iterative_deepening)
 
 
 class GameOfCoins(TwoPlayerGame):
@@ -17,7 +18,7 @@ class GameOfCoins(TwoPlayerGame):
         return self.pile <= 0
 
     def show(self):
-        print(f"{self.pile} monet pozostało na stole")
+        print(f"{self.pile} coins remaining")
 
     def scoring(self):
         if self.pile <= 0:
@@ -27,10 +28,6 @@ class GameOfCoins(TwoPlayerGame):
 
 
 if __name__ == "__main__":
-    # algorithm = Negamax(13)
-    # game = GameOfCoins([Human_Player(), AI_Player(algorithm)])
-    # history = game.play()
-
     tt = TranspositionTable()
     GameOfCoins.ttentry = lambda game: game.pile
     r, d, m = solve_with_iterative_deepening(
@@ -40,9 +37,9 @@ if __name__ == "__main__":
         tt=tt
     )
 
-    print("Czy pierwszy gracz może zawsze wygrać:", r)
-    print("Ile maksymalnie ruchów potrzeba do wygrania:", d)
-    print("Jaki powinien być pierwszy ruch:", m)
+    print(f"Can first player always win; {r}")
+    print(f"Maximal number of moves to win: {d}")
+    print(f"What should be the first move: {m}")
 
     game = GameOfCoins([AI_Player(tt), Human_Player()])
     history = game.play()
