@@ -72,24 +72,39 @@ def update():
 
 
 def on_mouse_down(pos):
-    global win, timer
-
     for i in range(len(dices_list)):
         if dices_list[i].collidepoint(pos) and game.current_player == 1:
             move = game.possible_moves()[i]
-            if int(move) <= game.pile:
-                game.play_move(move)
-                remove_coins(int(move))
-                timer = random.randint(120, 260)
-
-                if game.is_over():
-                    win = 2
+            make_human_move(move)
 
 
 """ HELPERS """
 
 
+def make_human_move(move):
+    """Applies human move to game.
+
+    Args:
+        move (int): the number of coins to take from the pile.
+    """
+    global timer, win
+    
+    if int(move) <= game.pile:
+        game.play_move(move)
+        remove_coins(int(move))
+        timer = random.randint(120, 260)
+
+        if game.is_over():
+            win = 2
+
+
 def remove_coins(number):
+    """Removes coins from the pile.
+
+    Args:
+        number (int): the number of coins to remove from the pile.
+    """
+
     for i in range(number):
         coins_list.pop()
 
@@ -114,7 +129,10 @@ def init_game():
 
 
 def init_dices():
-    """Initializes dices
+    """Initializes dices.
+
+    The dices are stored as a list of Actors, which contain the image of the
+    dice and the position of the dice.
     """
     x = WIDTH / 2 - (len(game.possible_moves()) * (68 + 20) - 20) / 2 + 68 / 2
     y = HEIGHT - 68 - 20
@@ -124,7 +142,7 @@ def init_dices():
 
 
 def init_coins():
-    """Initializes coins
+    """Initializes coins.
     """
     x = 55
     y = 50
